@@ -1,0 +1,9 @@
+{% assign my_to_csv_path = "tocsv" %}
+{% assign my_to_db_path = "todb" %}
+{% assign my_driver_path = 'ojdbc8.jar' %}
+{% assign my_usr = "usr1" %}
+{% assign my_pass = "pass1" %}
+{% assign my_url = "jdbc:oracle:thin:@//localhost/xe" %}
+
+# env.LAST_UPD この値より新しいデータのみ抽出。
+# FILE_BASE_PATH outputのベースパス。バッチ処理ではcom.asakusafw.directio.root.fs.pathと合わせる。
