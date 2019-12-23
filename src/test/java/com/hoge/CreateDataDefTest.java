@@ -110,13 +110,17 @@ public class CreateDataDefTest {
     		"		@windgate.jdbc.column(name = \"CHAR_COLUMN\")\n" + 
     		"		char_column : TEXT;\n" + 
     		"\n" + 
-//    		"		\"LONG_COLUMN\"\n" + 
-//    		"		@windgate.jdbc.column(name = \"LONG_COLUMN\")\n" + 
-//    		"		long_column : TEXT;\n" + 
-//    		"\n" + 
+    		"		\"NCHAR_COLUMN\"\n" + 
+    		"		@windgate.jdbc.column(name = \"NCHAR_COLUMN\")\n" + 
+    		"		nchar_column : TEXT;\n" + 
+    		"\n" + 
     		"		\"VARCHAR2_COLUMN\"\n" + 
     		"		@windgate.jdbc.column(name = \"VARCHAR2_COLUMN\")\n" + 
     		"		varchar2_column : TEXT;\n" + 
+    		"\n" + 
+    		"		\"NVARCHAR2_COLUMN\"\n" + 
+    		"		@windgate.jdbc.column(name = \"NVARCHAR2_COLUMN\")\n" + 
+    		"		nvarchar2_column : TEXT;\n" + 
     		"\n" + 
     		"		\"CLOB_COLUMN\"\n" + 
     		"		@windgate.jdbc.column(name = \"CLOB_COLUMN\")\n" + 
@@ -145,10 +149,12 @@ public class CreateDataDefTest {
     		"  user: {{my_usr}}\n" + 
     		"  password: {{my_pass}}\n" + 
     		"  table: HOGE_TBL\n" + 
-    		"  select: \"CHAR_COLUMN,VARCHAR2_COLUMN,CLOB_COLUMN,NUMBER_10_3_COLUMN,NUMBER_8_COLUMN,DATE_COLUMN\"\n" + 
+    		"  select: \"CHAR_COLUMN,NCHAR_COLUMN,VARCHAR2_COLUMN,NVARCHAR2_COLUMN,CLOB_COLUMN,NUMBER_10_3_COLUMN,NUMBER_8_COLUMN,DATE_COLUMN\"\n" + 
     		"  columns:\n" + 
     		"  - {name: CHAR_COLUMN, type: string}\n" + 
+    		"  - {name: NCHAR_COLUMN, type: string}\n" + 
     		"  - {name: VARCHAR2_COLUMN, type: string}\n" + 
+    		"  - {name: NVARCHAR2_COLUMN, type: string}\n" + 
     		"  - {name: CLOB_COLUMN, type: string}\n" + 
     		"  - {name: NUMBER_10_3_COLUMN, type: double}\n" + 
     		"  - {name: NUMBER_8_COLUMN, type: double}\n" + 
@@ -188,8 +194,9 @@ public class CreateDataDefTest {
     		"    allow_optional_columns: false\n" + 
     		"    columns:\n" + 
     		"    - {name: CHAR_COLUMN, type: string}\n" + 
-//    		"    - {name: LONG_COLUMN, type: string}\n" + 
+    		"    - {name: NCHAR_COLUMN, type: string}\n" + 
     		"    - {name: VARCHAR2_COLUMN, type: string}\n" + 
+    		"    - {name: NVARCHAR2_COLUMN, type: string}\n" + 
     		"    - {name: CLOB_COLUMN, type: string}\n" + 
     		"    - {name: NUMBER_10_3_COLUMN, type: double}\n" + 
     		"    - {name: NUMBER_8_COLUMN, type: double}\n" + 

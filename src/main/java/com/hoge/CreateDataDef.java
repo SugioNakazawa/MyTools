@@ -28,8 +28,10 @@ public class CreateDataDef {
 
 	private Map<String, String> typeMap;
 	private String[][] typeData = { //
-			{ "VARCHAR2", "string" }, //
 			{ "CHAR", "string" }, //
+			{ "NCHAR", "string" }, //
+			{ "VARCHAR2", "string" }, //
+			{ "NVARCHAR2", "string" }, //
 			{ "CLOB", "string" }, //
 			{ "DATE", "timestamp, format: '%Y-%m-%d'" }, //
 			{ "TIMESTAMP(6)", "timestamp, format: '%Y-%m-%d %k:%M:%S'" }, //
@@ -37,8 +39,10 @@ public class CreateDataDef {
 	};
 	private Map<String, String> dmdlMap;
 	private String[][] dmdlData = { //
-			{ "VARCHAR2", "TEXT" }, //
 			{ "CHAR", "TEXT" }, //
+			{ "NCHAR", "TEXT" }, //
+			{ "VARCHAR2", "TEXT" }, //
+			{ "NVARCHAR2", "TEXT" }, //
 			{ "CLOB", "TEXT" }, //
 			{ "DATE", "DATE" }, //
 			{ "TIMESTAMP(6)", "DATETIME" }, //

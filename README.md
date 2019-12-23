@@ -98,15 +98,26 @@ CreateDataDef type tableName
 - DB_PASS パスワード。初期値=pass1
 - DMDL_NAME_SPACE 出力するDMDLのnamespace。初期値=db
 ### カラム型変換対象
-|Oracle|Asakusa DMDL|embulk|
-|:---|:---|:---|
-|VARCHAR2|TEXT|string|
-|CHAR|TEXT|string|
-|CLOB|TEXT|string|
-|NUMBER|DECIMAL|double|
-|DATE|DATE|timestamp, format: '%Y-%m-%d'|
-|TIMESTAMP(6)|DATETIME|timestamp, format: '%Y-%m-%d %k:%M:%S'|
+|タイプ|Oracle|Asakusa DMDL|embulk|
+|:---:|:---|:---|:---|
+|文字列|CHAR|TEXT|string|
+||NCHAR|TEXT|string|
+||VARCHAR2|TEXT|string|
+||NVARCHAR2|TEXT|string|
+||CLOB|TEXT|string|
+|数値|NUMBER|DECIMAL|double|
+|日付時刻|DATE|DATE|timestamp, format: '%Y-%m-%d'|
+||TIMESTAMP(6)|DATETIME|timestamp, format: '%Y-%m-%d %k:%M:%S'|
 _上記以外の型はスクリプトに出力されません。_
+未対応カラム
+- BINARY_FLOAT
+- BINARY_DOUBLE
+- INTERVAL YEAR TO MONTH
+- INTERVAL DAY TO SECOND
+
+非対応カラム
+- VARCHAR : 生成されたテーブルではVARCHAR2となる。
+- LONG : embulkインサート不可
 ## DMDLの生成
 実行例
 ```shell
@@ -123,9 +134,17 @@ hoge_tbl = {
 		@windgate.jdbc.column(name = "CHAR_COLUMN")
 		char_column : TEXT;
 
+		"NCHAR_COLUMN"
+		@windgate.jdbc.column(name = "NCHAR_COLUMN")
+		nchar_column : TEXT;
+
 		"VARCHAR2_COLUMN"
 		@windgate.jdbc.column(name = "VARCHAR2_COLUMN")
 		varchar2_column : TEXT;
+
+		"NVARCHAR2_COLUMN"
+		@windgate.jdbc.column(name = "NVARCHAR2_COLUMN")
+		nvarchar2_column : TEXT;
 
 		"CLOB_COLUMN"
 		@windgate.jdbc.column(name = "CLOB_COLUMN")
