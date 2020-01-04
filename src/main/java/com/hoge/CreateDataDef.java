@@ -242,7 +242,7 @@ public class CreateDataDef {
 		return "";
 	}
 
-	private String outputDmdl() {
+	String outputDmdl() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("\"" + tableName + "\"\n");
 		sb.append("@namespace(value = " + DMDL_NAME_SPACE + ")\n");
@@ -259,6 +259,14 @@ public class CreateDataDef {
 		}
 		sb.append("};");
 		return sb.toString();
+	}
+
+	public List<String[]> getColList() {
+		return colList;
+	}
+
+	public void setColList(List<String[]> colList) {
+		this.colList = colList;
 	}
 
 	private String convDmdl(String org) {
