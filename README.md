@@ -1,4 +1,44 @@
 # MyTool
+---
+## Linux/OSX
+- startThreadDump.sh
+
+Javaスレッドダンプを一定間隔で出力。出力先はカレントディレクトリ。
+
+```shell
+# ファイル名
+thread_dump_`date "+%Y%m%d_%H%M%S"`.log
+```
+- startDstat.sh
+
+dstat のよく使う引数
+
+```shell
+dstat -tcmdns --output dstat_out.log
+```
+
+## asakusaFW
+### shell
+- showAllBatch.sh.sh
+
+Asakusaバッチのパラメータ、ジョブ、インポータ、エクスポータを簡易モードで標準出力。
+- showAllImporterDetail.sh
+
+Asakusaバッチのすべてのインポータを詳細モードで標準出力。
+- createFlow.sh
+
+Asakusaバッチのジョブフローとオペレータフローを出力ディレクトリ「flowfigure」に作成する。
+
+### Java
+- StatAsakusaLog
+
+Asakusaバッチログから入出力の抽出。tsv形式で標準出力に出力されますのでエクセルに貼り付けられます。
+実行例
+
+```shell
+$ java -cp ~/mygithub/mytips/build/libs/mytips.jar hoge.StatAsakusaLog BTSE001/BTSE001-sh.log >> iostat.tsv
+```
+---
 ## CreateDataDef
 > データベースに接続しメタ情報からAsakusa用DMDL、embulkスクリプトを生成。
 
