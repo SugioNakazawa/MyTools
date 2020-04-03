@@ -139,38 +139,42 @@ public class CreateDataDefTest {
     		"@windgate.jdbc.table(name = \"HOGE_TBL\")\n" + 
     		"@directio.csv\n" + 
     		"hoge_tbl = {\n" + 
-    		"		\"CHAR_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"CHAR_COLUMN\")\n" + 
-    		"		char_column : TEXT;\n" + 
+            "\t\t\"CHAR_COLUMN\"\n" + 
+            "\t\t@windgate.jdbc.column(name = \"CHAR_COLUMN\")\n" + 
+            "\t\tchar_column : TEXT;\n" + 
+            "\n" + 
+            "\t\t\"NCHAR_COLUMN\"\n" + 
+            "\t\t@windgate.jdbc.column(name = \"NCHAR_COLUMN\")\n" + 
+            "\t\tnchar_column : TEXT;\n" + 
+            "\n" + 
+            "\t\t\"VARCHAR2_COLUMN\"\n" + 
+            "\t\t@windgate.jdbc.column(name = \"VARCHAR2_COLUMN\")\n" + 
+            "\t\tvarchar2_column : TEXT;\n" + 
+            "\n" + 
+            "\t\t\"NVARCHAR2_COLUMN\"\n" + 
+            "\t\t@windgate.jdbc.column(name = \"NVARCHAR2_COLUMN\")\n" + 
+            "\t\tnvarchar2_column : TEXT;\n" + 
+            "\n" + 
+            "\t\t\"CLOB_COLUMN\"\n" + 
+            "\t\t@windgate.jdbc.column(name = \"CLOB_COLUMN\")\n" + 
+            "\t\tclob_column : TEXT;\n" + 
     		"\n" + 
-    		"		\"NCHAR_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"NCHAR_COLUMN\")\n" + 
-    		"		nchar_column : TEXT;\n" + 
+    		"\t\t\"NUMBER_10_3_COLUMN\"\n" + 
+    		"\t\t@windgate.jdbc.column(name = \"NUMBER_10_3_COLUMN\")\n" + 
+    		"\t\tnumber_10_3_column : DECIMAL;\n" + 
     		"\n" + 
-    		"		\"VARCHAR2_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"VARCHAR2_COLUMN\")\n" + 
-    		"		varchar2_column : TEXT;\n" + 
+    		"\t\t\"NUMBER_8_COLUMN\"\n" + 
+    		"\t\t@windgate.jdbc.column(name = \"NUMBER_8_COLUMN\")\n" + 
+    		"\t\tnumber_8_column : DECIMAL;\n" + 
     		"\n" + 
-    		"		\"NVARCHAR2_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"NVARCHAR2_COLUMN\")\n" + 
-    		"		nvarchar2_column : TEXT;\n" + 
+    		"\t\t\"DATE_COLUMN\"\n" + 
+    		"\t\t@windgate.jdbc.column(name = \"DATE_COLUMN\")\n" + 
+    		"\t\tdate_column : DATE;\n" + 
     		"\n" + 
-    		"		\"CLOB_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"CLOB_COLUMN\")\n" + 
-    		"		clob_column : TEXT;\n" + 
-    		"\n" + 
-    		"		\"NUMBER_10_3_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"NUMBER_10_3_COLUMN\")\n" + 
-    		"		number_10_3_column : DECIMAL;\n" + 
-    		"\n" + 
-    		"		\"NUMBER_8_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"NUMBER_8_COLUMN\")\n" + 
-    		"		number_8_column : DECIMAL;\n" + 
-    		"\n" + 
-    		"		\"DATE_COLUMN\"\n" + 
-    		"		@windgate.jdbc.column(name = \"DATE_COLUMN\")\n" + 
-    		"		date_column : DATE;\n" + 
-    		"\n" + 
+            "\t\t\"TIMESTAMP_COLUMN\"\n" + 
+            "\t\t@windgate.jdbc.column(name = \"TIMESTAMP_COLUMN\")\n" + 
+            "\t\ttimestamp_column : DATETIME;\n" +
+            "\n" + 
     		"};";
 
     static private String expToCsv = "{% include 'myenv' %}\n" + 
@@ -182,7 +186,7 @@ public class CreateDataDefTest {
     		"  user: {{my_usr}}\n" + 
     		"  password: {{my_pass}}\n" + 
     		"  table: HOGE_TBL\n" + 
-    		"  select: \"CHAR_COLUMN,NCHAR_COLUMN,VARCHAR2_COLUMN,NVARCHAR2_COLUMN,CLOB_COLUMN,NUMBER_10_3_COLUMN,NUMBER_8_COLUMN,DATE_COLUMN\"\n" + 
+    		"  select: \"CHAR_COLUMN,NCHAR_COLUMN,VARCHAR2_COLUMN,NVARCHAR2_COLUMN,CLOB_COLUMN,NUMBER_10_3_COLUMN,NUMBER_8_COLUMN,DATE_COLUMN,TIMESTAMP_COLUMN\"\n" + 
     		"  columns:\n" + 
     		"  - {name: CHAR_COLUMN, type: string}\n" + 
     		"  - {name: NCHAR_COLUMN, type: string}\n" + 
@@ -191,7 +195,8 @@ public class CreateDataDefTest {
     		"  - {name: CLOB_COLUMN, type: string}\n" + 
     		"  - {name: NUMBER_10_3_COLUMN, type: double}\n" + 
     		"  - {name: NUMBER_8_COLUMN, type: double}\n" + 
-    		"  - {name: DATE_COLUMN, type: timestamp, format: '%Y-%m-%d'}\n" + 
+    		"  - {name: DATE_COLUMN, type: timestamp, format: '%Y-%m-%d'}\n" +
+    		"  - {name: TIMESTAMP_COLUMN, type: timestamp, format: '%Y-%m-%d %k:%M:%S'}\n" +
     		"out:\n" + 
     		"  type: file\n" + 
     		"  path_prefix: {{my_to_csv_path}}/hoge_tbl/hoge_tbl\n" + 
@@ -234,6 +239,7 @@ public class CreateDataDefTest {
     		"    - {name: NUMBER_10_3_COLUMN, type: double}\n" + 
     		"    - {name: NUMBER_8_COLUMN, type: double}\n" + 
     		"    - {name: DATE_COLUMN, type: timestamp, format: '%Y-%m-%d'}\n" + 
+    		"    - {name: TIMESTAMP_COLUMN, type: timestamp, format: '%Y-%m-%d %k:%M:%S'}\n" + 
     		"out:\n" + 
     		"  type: oracle\n" + 
     		"  driver_path: {{my_driver_path}}\n" + 

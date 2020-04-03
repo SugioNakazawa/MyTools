@@ -46,6 +46,7 @@ public class CreateDataDef {
 			{ "CLOB", "TEXT" }, //
 			{ "DATE", "DATE" }, //
 			{ "TIMESTAMP(6)", "DATETIME" }, //
+            { "TIMESTAMP", "DATETIME" }, //
 			{ "NUMBER", "DECIMAL" }, //
 	};
 
