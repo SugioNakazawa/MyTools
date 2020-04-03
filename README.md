@@ -1,75 +1,41 @@
-# MyTool
----
-## 準備
-### テストケース実行前に接続先DBを用意
-start docker
+# MyTools
+## 機能一覧
 
-```shell
-MyTools/src/dist/init $ ./startOracleContainer.sh
-```
-
-次のメッセージが出るまでDB起動待ち。
-
-```
-#########################'
-DATABASE IS READY TO USE!
-#########################'
-```
-
-上記のコンソールはそのままにしておく。
-
-スキーマ、データの準備
-
-```shell
-MyTools/src/dist/init $ ./prepareContainerDb.sh
-
-```
-
----
-## Linux/OSX
-- startThreadDump.sh
-
-Javaスレッドダンプを一定間隔で出力。出力先はカレントディレクトリ。
+### startThreadDump.sh
+Javaスレッドダンプを10秒間隔で出力。出力先はカレントディレクトリ。
 
 ```shell
 # ファイル名
 thread_dump_`date "+%Y%m%d_%H%M%S"`.log
 ```
-- startDstat.sh
+### startDstat.sh
 
 dstat のよく使う引数
 
 ```shell
-dstat -tcmdns --output dstat_out.log
+dstat -tcmdns --output dstat_`date "+%Y%m%d_%H%M%S"`.log
 ```
 
-## asakusaFW
-### shell
-- showAllBatch.sh.sh
-
+### showAllBatch.sh.sh
 Asakusaバッチのパラメータ、ジョブ、インポータ、エクスポータを簡易モードで標準出力。
-- showAllImporterDetail.sh
-
+### showAllImporterDetail.sh
 Asakusaバッチのすべてのインポータを詳細モードで標準出力。
-- createFlow.sh
-
+### createFlow.sh
 Asakusaバッチのジョブフローとオペレータフローを出力ディレクトリ「flowfigure」に作成する。
-
-### Java
-- StatAsakusaLog
-
+### StatAsakusaLog
 Asakusaバッチログから入出力の抽出。tsv形式で標準出力に出力されますのでエクセルに貼り付けられます。
 実行例
 
 ```shell
 $ java -cp ~/mygithub/mytips/build/libs/mytips.jar hoge.StatAsakusaLog BTSE001/BTSE001-sh.log >> iostat.tsv
 ```
----
-## CreateDataDef
-> データベースに接続しメタ情報からAsakusa用DMDL、embulkスクリプトを生成。
+
+### CreateDataDef
+データベースに接続しメタ情報からAsakusa用DMDL、embulkスクリプトを生成。
 
 以下手順ではテスト実行の手順はDockerを利用した手順を記載しています。
-## requirements
+## 準備
+事前に必要なソフトウェア
 * Java 1.8
 * oracle instantclient_sqlplus 9.0.3
 * embulk 0.9.22
@@ -77,78 +43,32 @@ $ java -cp ~/mygithub/mytips/build/libs/mytips.jar hoge.StatAsakusaLog BTSE001/B
 * embulk plugin embulk-output-oracle (0.8.6)
 * docker 19.03.5
 * OracleContainer 11.2.0.2
-## 準備
 ### ダウンロード
 ```shell
 $ git clone git@github.com:SugioNakazawa/MyTools.git
 ```
 ### ビルド＆配置
-DBが用意されていない場合はJUnitでエラーになりますので最初はテストをスキップしてビルドします。
+DBが用意されていない場合はJUnitでエラーになりますのでテストをスキップしてビルドします。
+
 ```shell
 $ cd MyTools
+# DBあり
 $ ./gradlew build
+# DBなし
+$ ./gradlew -x test build
 # 任意の作業場所へ
 $ cd ~/work
 $ tar xvf ~/github/MyTools/build/distributions/MyTools-1.0.tar
 ```
-### Databse環境
-#### Docker Container起動。
-```shell
-$ ./MyTools-1.0/init/startOracleContainer.sh
-```
-実行内容は以下と同じ。
-```shell
-$ docker run --rm --name docker_oracle_11202 --shm-size=1g \
--p 1521:1521 -p 8080:8080 -e ORACLE_PWD=password oracle/database:11.2.0.2-xe
-```
-以下のコメントが出力されたらDB起動完了です。
-```shell
-#########################
-DATABASE IS READY TO USE!
-#########################
-```
-* オプション`--rm`によりcontainer停止時に削除されます。
-止めるときは別のターミナルから
-```shell
-$ docker container stop docker_oracle_11202
-```
-この例ではcontainerはフォアグラウンドにて実行しますので、以降は別のターミナルにてworkディレクトで作業をおこないます。
-#### スキーマ準備
-usr1ユーザ、ディレクトリの作成、init.dmpをcontainerへコピーしimpdpの実行をします。
-```shell
-$ ./MyTools-1.0/init/prepareContainerDb.sh
-```
-ユーザーとテーブルの確認
-```shell
-$ sqlplus usr1/pass1@localhost:1521/XE
-```
-```
-SQL*Plus: Release 12.1.0.2.0 Production on Thu Dec 19 14:43:21 2019
-
-Copyright (c) 1982, 2016, Oracle.  All rights reserved.
 
 
-Connected to:
-Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
-```
-```sql
-SQL> select table_name from user_tables;
-```
-```
-TABLE_NAME
-------------------------------
-HOGE_TBL
-
-SQL>
-```
 ---
-# CreateDataDef
+## CreateDataDef
 OracleDBに接続し、指定したテーブルのDMDL、embulk用スクリプトを生成（標準出力に出力）。
 接続DBはローカルのOracleDB11.2.0.2を想定。
 ```shell
 CreateDataDef type tableName
 ```
-## 処理概要
 ### 引数
 - 引数１:type
   - dmdl:AsakusaFW用DMDL
@@ -173,6 +93,7 @@ CreateDataDef type tableName
 ||CLOB|TEXT|string|
 |数値|NUMBER|DECIMAL|double|
 |日付時刻|DATE|DATE|timestamp, format: '%Y-%m-%d'|
+||TIMESTAMP|DATETIME|timestamp, format: '%Y-%m-%d %k:%M:%S'|
 ||TIMESTAMP(6)|DATETIME|timestamp, format: '%Y-%m-%d %k:%M:%S'|
 _上記以外の型はスクリプトに出力されません。_
 未対応カラム
@@ -231,7 +152,7 @@ hoge_tbl = {
 };
 ```
 ## embulkスクリプト
-### 準備
+### embulk実行準備
 embulkを実行するためデプロイディレクトリから共通定義ファイルとJDBCドライバを実行ディレクトリにコピーします。
 ```shell
 ## 共通ファイル
@@ -244,14 +165,14 @@ $ mkdir -p todb/hoge_tbl
 ```
 `_myenv.yml.liquid`ファイル：DB接続などの共通情報を記載しています。環境に合わせて適時修正してください。
 ### スクリプト作成
-モジュールを実行してDBスキーマからembulk定義を作成。
+CreateDataDefを実行してDBスキーマからembulk定義を作成。
 ```shell
 $ java -cp MyTools-1.0/MyTools-1.0.jar com.hoge.CreateDataDef tocsv hoge_tbl \
 > hoge_tbl_tocsv.yml.liquid
 $ java -cp MyTools-1.0/MyTools-1.0.jar com.hoge.CreateDataDef todb hoge_tbl \
 > hoge_tbl_todb.yml.liquid
 ```
-#### CSVダウンロード実行
+### ダウンロード
 ```shell
 ## プレビュで確認
 $ embulk preview hoge_tbl_tocsv.yml.liquid
@@ -270,7 +191,7 @@ tocsv/
 
 1 directory, 4 files
 ```
-#### DBへのアップロード実行
+### アップロード
 ```shell
 ## データ準備。ダウンロードしたものを使用。
 $ cp tocsv/hoge_tbl/* todb/hoge_tbl/
@@ -280,3 +201,65 @@ $ embulk preview hoge_tbl_todb.yml.liquid
 $ embulk run hoge_tbl_todb.yml.liquid
 ```
 DBにデータが登録されていることを確認します。LONG_COLUMNはLONG型のため無視されるのでnullになります。
+
+---
+
+## DockerによるDatabseの準備
+テストケース、サンプル実行ではlocalにあるOracleDbが必要です。
+Dockerで準備する場合の手順を記述します。
+以下のようなOracleイメージがある前提で説明しています。
+```
+REPOSITORY:oracle/database
+TAG:11.2.0.2-xe
+```
+
+### コンテナ起動
+```shell
+$ ./MyTools-1.0/init/startOracleContainer.sh
+```
+実行内容は以下と同じ。
+```shell
+$ docker run --rm --name docker_oracle_11202 --shm-size=1g \
+-p 1521:1521 -p 8080:8080 -e ORACLE_PWD=password \
+oracle/database:11.2.0.2-xe
+```
+以下のコメントが出力されたらDB起動完了です。
+```shell
+#########################
+DATABASE IS READY TO USE!
+#########################
+```
+* オプション`--rm`によりcontainer停止時に削除されます。
+
+この例ではcontainerはフォアグラウンドにて実行しますので、以降は別のターミナルにて作業します。
+停止は別のターミナルから
+```shell
+$ docker stop docker_oracle_11202
+```
+### スキーマ登録
+usr1ユーザ、ディレクトリの作成、init.dmpをcontainerへコピーしimpdpの実行をします。
+```shell
+$ ./MyTools-1.0/init/prepareContainerDb.sh
+```
+ユーザーとテーブルの確認
+HOGE_TBLが存在することを確認します。
+```shell
+$ sqlplus usr1/pass1@localhost:1521/XE
+```
+```shell
+SQL*Plus: Release 12.1.0.2.0 Production on Thu Dec 19 14:43:21 2019
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Express Edition Release 11.2.0.2.0 - 64bit Production
+```
+```sql
+SQL> select table_name from user_tables;
+TABLE_NAME
+------------------------------
+HOGE_TBL
+
+SQL>
+```
