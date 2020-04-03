@@ -1,5 +1,31 @@
 # MyTool
 ---
+## 準備
+### テストケース実行前に接続先DBを用意
+start docker
+
+```shell
+MyTools/src/dist/init $ ./startOracleContainer.sh
+```
+
+次のメッセージが出るまでDB起動待ち。
+
+```
+#########################'
+DATABASE IS READY TO USE!
+#########################'
+```
+
+上記のコンソールはそのままにしておく。
+
+スキーマ、データの準備
+
+```shell
+MyTools/src/dist/init $ ./prepareContainerDb.sh
+
+```
+
+---
 ## Linux/OSX
 - startThreadDump.sh
 
