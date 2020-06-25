@@ -14,12 +14,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author nakazawasugio
  *
  */
 public class CreateDataDefTest {
+	static Logger logger = LoggerFactory.getLogger(CreateDataDefTest.class);
 
     /**
      * @throws java.lang.Exception
@@ -54,11 +57,37 @@ public class CreateDataDefTest {
      */
     @Test
     public final void testMain() {
-        String[] testParam = { "dmdl", "HOGE_TBL" };
+        String[] testParam = { "HOGE_TBL", "dmdl" };
         try {
             CreateDataDef.main(testParam);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    /**
+     * タイプがnullー＞エラー
+     */
+    @Test
+    public final void testMainTypeNull() {
+        String[] testParam = { "HOGE_TBL", null };
+        try {
+            CreateDataDef.main(testParam);
+            fail();
+        } catch (Exception e) {
+        	Assert.assertEquals("Illegual type.DMDL, TOCSV, TODB.", e.getMessage());
+        }
+    }
+    /**
+     * カラムなしテーブルー＞エラー
+     */
+    @Test
+    public final void testMainNoColumnsTable() {
+        String[] testParam = { "NO_COL_TBL", "DMDL" };
+        try {
+            CreateDataDef.main(testParam);
+            fail();
+        } catch (Exception e) {
+        	Assert.assertEquals("no data table=NO_COL_TBL", e.getMessage());
         }
     }
 
@@ -67,22 +96,23 @@ public class CreateDataDefTest {
      */
     @Test
     public final void testDmdl() {
-        CreateDataDef target = new CreateDataDef(CreateDataDef.Type.DMDL, "HOGE_TBL");
+        CreateDataDef target = new CreateDataDef();
         try {
-            target.exec();
+            target.exec("HOGE_TBL", CreateDataDef.Type.DMDL);
+//            Assert.assertEquals(12, target.getColList2().size());
         } catch (Exception e) {
             e.printStackTrace();
             fail();
         }
-
+//        System.out.println(target.getOutput());
         Assert.assertEquals(expDmdl, target.getOutput());
     }
 
     @Test
     public final void testToCsv() {
-        CreateDataDef target = new CreateDataDef(CreateDataDef.Type.TOCSV, "HOGE_TBL");
+        CreateDataDef target = new CreateDataDef();
         try {
-            target.exec();
+            target.exec("HOGE_TBL", CreateDataDef.Type.TOCSV);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -93,9 +123,9 @@ public class CreateDataDefTest {
 
     @Test
     public final void testToDb() {
-        CreateDataDef target = new CreateDataDef(CreateDataDef.Type.TODB, "HOGE_TBL");
+        CreateDataDef target = new CreateDataDef();
         try {
-            target.exec();
+            target.exec("HOGE_TBL", CreateDataDef.Type.TODB);
         } catch (Exception e) {
             e.printStackTrace();
             fail();
@@ -128,8 +158,14 @@ public class CreateDataDefTest {
     			colList.add(dat);
     		}
     	}
-        CreateDataDef target = new CreateDataDef(CreateDataDef.Type.DMDL, "HOGE_TBL");
-        target.setColList(colList);
+        CreateDataDef target = new CreateDataDef();
+        try {
+			target.exec("HOGE_TBL", CreateDataDef.Type.DMDL);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        target.setColList(colList);
 
         Assert.assertEquals(expDmdl,target.outputDmdl());
     }

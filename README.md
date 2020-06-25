@@ -217,7 +217,8 @@ TAG:11.2.0.2-xe
 ```shell
 $ ./MyTools-1.0/init/startOracleContainer.sh
 ```
-実行内容は以下と同じ。
+バックグランドではなく終了後にコンテナを削除するモードで起動しています。
+実行内容は以下。
 ```shell
 $ docker run --rm --name docker_oracle_11202 --shm-size=1g \
 -p 1521:1521 -p 8080:8080 -e ORACLE_PWD=password \
