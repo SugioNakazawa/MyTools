@@ -1,5 +1,5 @@
 # MyTools
-## 機能一覧
+## コマンド一覧
 
 ### startThreadDump.sh
 Javaスレッドダンプを10秒間隔で出力。出力先はカレントディレクトリ。
@@ -20,21 +20,32 @@ dstat -tcmdns --output dstat_`date "+%Y%m%d_%H%M%S"`.log
 Asakusaバッチのパラメータ、ジョブ、インポータ、エクスポータを簡易モードで標準出力。
 ### showAllImporterDetail.sh
 Asakusaバッチのすべてのインポータを詳細モードで標準出力。
+
 ### createFlow.sh
-Asakusaバッチのジョブフローとオペレータフローを出力ディレクトリ「flowfigure」に作成する。
-### StatAsakusaLog
+Asakusaバッチのジョブフローとオペレータフローを出力ディレクトリ「 flowfigure 」に作成する。
+
+### countOperators.sh
+flowfigure ディレクトリのdotファイルを読み込んでタイプ別のオペレータ数をカウントします。事前に createFlow.sh を実行する必要があります。
+
+### countOperators_0.8.sh
+AsakusaFW CLIコマンドが使えない古いバージョン用のcountOperatorsです。指定したディレクトリ（batchc）内の flowgraph.dot ファイルを読み込んでタイプ別のオペレータ数をカウントします。
+
+### statAsakusaLog.sh
+* ${1} 読み込むログファイルのファイルパス
+
 Asakusaバッチログから入出力の抽出。tsv形式で標準出力に出力されますのでエクセルに貼り付けられます。
 実行例
 
 ```shell
-$ java -cp ~/mygithub/mytips/build/libs/mytips.jar hoge.StatAsakusaLog BTSE001/BTSE001-sh.log >> iostat.tsv
+$ ./statAsakusaLog.sh \
+~/work/exec_IF0506dpEx.sh_20190821_1255.log  >> ioCount.tsv
 ```
 
-### CreateDataDef
-データベースに接続しメタ情報からAsakusa用DMDL、embulkスクリプトを生成。
+---
 
-以下手順ではテスト実行の手順はDockerを利用した手順を記載しています。
-## 準備
+## CreateDataDef準備
+データベースに接続しメタ情報からAsakusa用DMDL、embulkスクリプトを生成。以下手順ではテスト実行の手順はDockerを利用した手順を記載しています。
+
 事前に必要なソフトウェア
 * Java 1.8
 * oracle instantclient_sqlplus 9.0.3
