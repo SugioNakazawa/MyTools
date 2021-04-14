@@ -275,5 +275,3 @@ HOGE_TBL
 
 SQL>
 ```
-aws_secret_access_key = ABcDe1F2hIjkl3nop45sTUv6XYz7aBcDEFghIJKL
-コミットしてはいけない
