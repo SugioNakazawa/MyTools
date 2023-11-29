@@ -1,36 +1,33 @@
 # MyTools
-## コマンド一覧
-
-### startThreadDump.sh
+## startThreadDump.sh
 Javaスレッドダンプを10秒間隔で出力。出力先はカレントディレクトリ。
 
 ```shell
 # ファイル名
 thread_dump_`date "+%Y%m%d_%H%M%S"`.log
 ```
-### startDstat.sh
-
+## startDstat.sh
 dstat のよく使う引数
 
 ```shell
 dstat -tcmdns --output dstat_`date "+%Y%m%d_%H%M%S"`.log
 ```
 
-### showAllBatch.sh.sh
+## showAllBatch.sh.sh
 Asakusaバッチのパラメータ、ジョブ、インポータ、エクスポータを簡易モードで標準出力。
-### showAllImporterDetail.sh
+## showAllImporterDetail.sh
 Asakusaバッチのすべてのインポータを詳細モードで標準出力。
 
-### createFlow.sh
+## createFlow.sh
 Asakusaバッチのジョブフローとオペレータフローを出力ディレクトリ「 flowfigure 」に作成する。
 
-### countOperators.sh
+## countOperators.sh
 flowfigure ディレクトリのdotファイルを読み込んでタイプ別のオペレータ数をカウントします。事前に createFlow.sh を実行する必要があります。
 
-### countOperators_0.8.sh
+## countOperators_0.8.sh
 AsakusaFW CLIコマンドが使えない古いバージョン用のcountOperatorsです。指定したディレクトリ（batchc）内の flowgraph.dot ファイルを読み込んでタイプ別のオペレータ数をカウントします。
 
-### statAsakusaLog.sh
+## statAsakusaLog.sh
 * ${1} 読み込むログファイルのファイルパス
 
 Asakusaバッチログから入出力の抽出。tsv形式で標準出力に出力されますのでエクセルに貼り付けられます。
@@ -40,10 +37,13 @@ Asakusaバッチログから入出力の抽出。tsv形式で標準出力に出�
 $ ./statAsakusaLog.sh \
 ~/work/exec_IF0506dpEx.sh_20190821_1255.log  >> ioCount.tsv
 ```
+---
+## DataCounter
+CSVデータの列ごとの最大バイト数取得。shit-JIS から UTF-8 へ変換後のデータを DB へ連携するケースのチェックで使用できる。
+- 実行時引数: 対象のCSVファイル名
 
 ---
-
-## CreateDataDef準備
+## CreateDataDef
 データベースに接続しメタ情報からAsakusa用DMDL、embulkスクリプトを生成。以下手順ではテスト実行の手順はDockerを利用した手順を記載しています。
 
 事前に必要なソフトウェア
@@ -71,7 +71,6 @@ $ ./gradlew -x test build
 $ cd ~/work
 $ tar xvf ~/github/MyTools/build/distributions/MyTools-1.0.tar
 ```
-
 
 ---
 ## CreateDataDef
@@ -116,7 +115,7 @@ _上記以外の型はスクリプトに出力されません。_
 非対応カラム
 - VARCHAR : 生成されたテーブルではVARCHAR2となる。
 - LONG : embulkインサート不可
-## DMDLの生成
+### DMDLの生成
 実行例
 ```shell
 $ java -cp MyTools-1.0/MyTools-1.0.jar com.hoge.CreateDataDef dmdl HOGE_TBL
@@ -162,8 +161,8 @@ hoge_tbl = {
 
 };
 ```
-## embulkスクリプト
-### embulk実行準備
+### embulkスクリプト
+#### embulk実行準備
 embulkを実行するためデプロイディレクトリから共通定義ファイルとJDBCドライバを実行ディレクトリにコピーします。
 ```shell
 ## 共通ファイル
@@ -175,7 +174,7 @@ $ mkdir -p tocsv/hoge_tbl
 $ mkdir -p todb/hoge_tbl
 ```
 `_myenv.yml.liquid`ファイル：DB接続などの共通情報を記載しています。環境に合わせて適時修正してください。
-### スクリプト作成
+#### スクリプト作成
 CreateDataDefを実行してDBスキーマからembulk定義を作成。
 ```shell
 $ java -cp MyTools-1.0/MyTools-1.0.jar com.hoge.CreateDataDef tocsv hoge_tbl \
@@ -183,7 +182,7 @@ $ java -cp MyTools-1.0/MyTools-1.0.jar com.hoge.CreateDataDef tocsv hoge_tbl \
 $ java -cp MyTools-1.0/MyTools-1.0.jar com.hoge.CreateDataDef todb hoge_tbl \
 > hoge_tbl_todb.yml.liquid
 ```
-### ダウンロード
+#### ダウンロード
 ```shell
 ## プレビュで確認
 $ embulk preview hoge_tbl_tocsv.yml.liquid
@@ -202,7 +201,7 @@ tocsv/
 
 1 directory, 4 files
 ```
-### アップロード
+#### アップロード
 ```shell
 ## データ準備。ダウンロードしたものを使用。
 $ cp tocsv/hoge_tbl/* todb/hoge_tbl/
@@ -224,7 +223,7 @@ REPOSITORY:oracle/database
 TAG:11.2.0.2-xe
 ```
 
-### コンテナ起動
+## コンテナ起動
 ```shell
 $ ./MyTools-1.0/init/startOracleContainer.sh
 ```
@@ -248,7 +247,7 @@ DATABASE IS READY TO USE!
 ```shell
 $ docker stop docker_oracle_11202
 ```
-### スキーマ登録
+## スキーマ登録
 usr1ユーザ、ディレクトリの作成、init.dmpをcontainerへコピーしimpdpの実行をします。
 ```shell
 $ ./MyTools-1.0/init/prepareContainerDb.sh

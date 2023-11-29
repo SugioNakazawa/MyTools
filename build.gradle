@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
     //csv library
     compile group:'com.opencsv', name:'opencsv', version:'4.1'
 	compile 'commons-cli:commons-cli:1.4'
