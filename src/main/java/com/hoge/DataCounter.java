@@ -34,8 +34,14 @@ public class DataCounter {
 
         for (int i = 1; i < datas.size(); i++) {
             for (int j = 0; j < datas.get(i).length; j++) {
+                try{
                 if (datas.get(i)[j].getBytes().length > maxLength[j]) {
                     maxLength[j] = datas.get(i)[j].getBytes().length;
+                }
+                }
+                catch(Exception e){
+                    System.out.println("i:" + i + " j:" + j);
+                    throw e;
                 }
             }
         }
