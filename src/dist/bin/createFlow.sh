@@ -12,7 +12,7 @@ do
   ${ASAKUSA_CMD} generate dot jobflow -o ${OUT}/${BATCH}.dot ${BATCH}
   dot -Tpdf ${OUT}/${BATCH}.dot > ${OUT}/${BATCH}.pdf
 
-  for JOB in `~/asakusa/bin/asakusa list jobflow ${BATCH}`
+  for JOB in `${ASAKUSA_CMD} list jobflow ${BATCH}`
   do
     echo jobflow:${JOB}
     ${ASAKUSA_CMD} generate dot operator ${BATCH} -o ${OUT}/${JOB}.dot --jobflow ${JOB}

@@ -2,6 +2,8 @@
 
 ASAKUSA_MOD=${ASAKUSA_HOME}/bin/asakusa
 
+echo `pwd`
+
 echo "----------------------------------------------------------------------------------------------------"
 for BATCH in `${ASAKUSA_MOD} list batch`
 do
